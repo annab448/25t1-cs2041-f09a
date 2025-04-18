@@ -1,0 +1,55 @@
+subset 0: quit
+seq 42 44 | 2041 pied 1q
+2041 pied 10q < dictionary.txt
+seq 41 43 | 2041 pied 4q
+seq 90 110 | 2041 pied /.1/q
+2041 pied '/r.*v/q' < dictionary.txt
+yes | 2041 pied 3q
+
+subset 0: print
+seq 41 43 | 2041 pied 2p
+head dictionary.txt | 2041 pied 3p
+seq 41 43 | 2041 pied -n 2p
+2041 pied -n 42p < dictionary.txt
+head -n 1000 dictionary.txt | 2041 pied -n '/z.$/p'
+
+
+subset 0: substitute
+seq 1 5 | 2041 pied 's/[15]/zzz/'
+seq 1 5 | 2041 pied 's/[15]/zzz/g'
+echo "Hello Andrew" | 2041 pied 's/e//'
+echo "Hello Andrew" | 2041 pied 's/e//g'
+
+
+subset 1: addresses
+seq 1 5 | 2041 pied '$d'
+seq 42 44 | 2041 pied 2,3d
+seq 10 21 | 2041 pied 3,/2/d
+seq 10 21 | 2041 pied /2/,7d
+seq 10 21 | 2041 pied /2/,/7/d
+
+
+subset 1: substitute
+seq 1 5 | 2041 pied 'sX[15]XzzzX'
+
+subset 1: multiple commands
+seq 1 5 | 2041 pied '4q;/2/d'
+
+
+subset 1: -f
+echo "4q" > commands.script
+echo "/2/d" >> commands.script
+seq 1 5 | 2041 pied -f commands.script
+
+subset 1: input files
+seq 1 2 > two.txt
+seq 1 5 > five.txt
+2041 pied '4q;/2/d' two.txt five.txt
+
+subset 1: whitespace
+seq 24 42 | 2041 pied ' 3, 17  d  # comment'
+
+subset 2: -i
+seq 1 5 > five.txt
+2041 pied -i /[24]/d five.txt
+cat five.txt
